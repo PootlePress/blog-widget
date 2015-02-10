@@ -12,12 +12,11 @@
  */
 
 $blg_wid_plugin_dir = plugins_url( '', __FILE__ );
-
 require_once plugin_dir_path(__FILE__) . 'inc/functions.php';
 
 /**
  * Display a loop of posts.
- * Class blg_wid_Pootle_PostLoop
+ * Class Blog_Widget
  */
 class Blog_Widget extends WP_Widget{
 	function __construct() {
@@ -38,7 +37,7 @@ class Blog_Widget extends WP_Widget{
 	function widget( $args, $instance ) {
 		if( empty( $instance['template'] ) ) return;
 		if( is_admin() ) return;
-	
+
 		$template = $instance['template'];
 		$query_args = $instance;
 		unset($query_args['template']);
@@ -109,11 +108,6 @@ class Blog_Widget extends WP_Widget{
 			echo $args['before_title'] . $instance['title'] . $args['after_title'];
 		}
 		
-		//Our Awesome stuff
-		function blg_wid_add_continue_reading_link(){
-			
-		}
-		
 		//CSS to make our awesome new options functional
 		$id = $this->id;
 		
@@ -126,10 +120,11 @@ class Blog_Widget extends WP_Widget{
 				echo "<article class='blog_widget_post'>";
 				$instance['show_post_titles'] ? blog_widget_title() : null;
 				$instance['show_image'] ? blog_widget_post_img() : null;
-				$instance['all_meta'] ? blog_widget_post_meta() : null;
+				$instance['show_author_date'] ? blog_widget_date_author() : null;
+				$instance['show_tax'] ? blog_widget_taxonomies() : null;
 				$instance['show_excerpt'] ? blog_widget_post_excerpt() : null;
 				$instance['more'] ? blog_widget_post_more_link() : null;
-				$instance['all_meta'] ? blog_widget_post_comments() : null;
+				$instance['show_comments'] ? blog_widget_post_comments() : null;
 				echo "</article>";
 			}
 
@@ -161,7 +156,9 @@ class Blog_Widget extends WP_Widget{
 		$new['show_excerpt'] = !empty( $new['show_excerpt'] );
 		$new['show_post_titles'] = !empty( $new['show_post_titles'] );
 		$new['show_image'] = !empty( $new['show_image'] );
-		$new['all_meta'] = !empty( $new['all_meta'] );
+		$new['show_author_date'] = !empty( $new['show_author_date'] );
+		$new['show_tax'] = !empty( $new['show_tax'] );
+		$new['show_comments'] = !empty( $new['show_comments'] );
 		return $new;
 	}
 
@@ -189,7 +186,9 @@ class Blog_Widget extends WP_Widget{
 				'more' => false,
 				
 				//New additions
-				'all_meta' => true,
+				'show_author_date' => true,
+				'show_tax' => true,
+				'show_comments' => true,
 				'show_excerpt' => true,
 				'show_post_titles' => true,
 				'show_continue_reading' => true,
@@ -269,11 +268,23 @@ class Blog_Widget extends WP_Widget{
 			</p>
 
 			<p>
-				<label for="<?php echo $this->get_field_id('all_meta') ?>"><?php _e('Show Post Meta ', 'blg_wid') ?></label>
-				<input type="checkbox" class="widefat" id="<?php echo $this->get_field_id( 'all_meta' ) ?>" name="<?php echo $this->get_field_name( 'all_meta' ) ?>" <?php checked( $instance['all_meta'] ) ?> /><br/>
-				<small><?php _e('Show the date post was published', 'blg_wid') ?></small>
+				<label for="<?php echo $this->get_field_id('show_author_date') ?>"><?php _e('Show Author and Publish date ', 'blg_wid') ?></label>
+				<input type="checkbox" class="widefat" id="<?php echo $this->get_field_id( 'show_author_date' ) ?>" name="<?php echo $this->get_field_name( 'show_author_date' ) ?>" <?php checked( $instance['show_author_date'] ) ?> /><br/>
+				<small><?php _e('Show the author and publish date', 'blg_wid') ?></small>
 			</p>
-
+			
+			<p>
+				<label for="<?php echo $this->get_field_id('show_tax') ?>"><?php _e('Show Taxonomies ', 'blg_wid') ?></label>
+				<input type="checkbox" class="widefat" id="<?php echo $this->get_field_id( 'show_tax' ) ?>" name="<?php echo $this->get_field_name( 'show_tax' ) ?>" <?php checked( $instance['show_tax'] ) ?> /><br/>
+				<small><?php _e('Show the categories and the tags the post belongs to', 'blg_wid') ?></small>
+			</p>
+			
+			<p>
+				<label for="<?php echo $this->get_field_id('show_comments') ?>"><?php _e('Show Comments ', 'blg_wid') ?></label>
+				<input type="checkbox" class="widefat" id="<?php echo $this->get_field_id( 'show_comments' ) ?>" name="<?php echo $this->get_field_name( 'show_comments' ) ?>" <?php checked( $instance['show_comments'] ) ?> /><br/>
+				<small><?php _e('Show the number of comments on the post', 'blg_wid') ?></small>
+			</p>
+			
 			<p>
 				<label for="<?php echo $this->get_field_id('show_excerpt') ?>"><?php _e('Show excerpt ', 'blg_wid') ?></label>
 				<input type="checkbox" class="widefat" id="<?php echo $this->get_field_id( 'show_excerpt' ) ?>" name="<?php echo $this->get_field_name( 'show_excerpt' ) ?>" <?php checked( $instance['show_excerpt'] ) ?> /><br/>

@@ -7,6 +7,7 @@
 .widget_blog_widget .blog-widget-cat-links a:before {content: "\f318";vertical-align: -16%;}
 .widget_blog_widget .blog-widget-tags-links a:before {content: "\f323 ";vertical-align: -16%;}
 .widget_blog_widget .blog-widget-taxonomies {content: "\f323 ";}
+.widget_blog_widget article img{height: auto;max-width: 100%;}
 .widget_blog_widget .blog-widget-post-excerpt {}
 .widget_blog_widget .blog-widget-comments-link {}
 .widget_blog_widget .blog-widget-comments-link a:before {content: "\f125 ";vertical-align: -2px;}

@@ -26,11 +26,11 @@ if ( ! function_exists( 'blog_widget_post_img' ) ) {
 	}
 }
 
-if ( ! function_exists( 'blog_widget_date_author' ) ) {
+if ( ! function_exists( 'blog_widget_post_meta' ) ) {
 	/**
-	 * Prints Author and publish date
+	 * Prints post meta
 	 */
-	function blog_widget_date_author() {
+	function blog_widget_post_meta() {
 		if ( 'post' == get_post_type() ) {
 			//Author
 			echo
@@ -39,26 +39,16 @@ if ( ! function_exists( 'blog_widget_date_author' ) ) {
 				'</a></span>';
 			//Publish date
 			echo '<span class="blog-widget-time"> on <time datetime="' . get_the_time( 'F j, Y' ) . '">' . get_the_time( 'F j, Y' ) . '</time></span></div>';
-		}
-	}
-}
-
-if ( ! function_exists( 'blog_widget_taxonomies' ) ) {
-	/**
-	 * Prints taxonomies
-	 */
-	function blog_widget_taxonomies() {
-		if ( 'post' == get_post_type() ) {
-			//Get tags and categories
+			
+			//Get tags and catoegories
 			$categories_list = get_the_category_list( ', ' );
 			$tags_list = get_the_tag_list( '',  ', ' );
 			
-			//Start taxonomy container
 			if ( $categories_list || $tags_list) {
 				echo '<div class="blog-widget-taxonomies">';
 			}
 			
-			//Printing Categories
+			//Categories
 			if ( $categories_list ) {
 				echo '<span class="blog-widget-cat-links">'.$categories_list.'</span>';
 			} 
@@ -68,12 +58,11 @@ if ( ! function_exists( 'blog_widget_taxonomies' ) ) {
 				echo ', ';
 			}
 			
-			//Printing Tags
+			//Tags
 			if ( $tags_list ) { 
 				echo '<span class="blog-widget-tags-links">'. $tags_list.'</span>';
 			}
-
-			//Close taxonomy container
+						
 			if ( $categories_list || $tags_list) {
 				echo '</div>';
 			}
